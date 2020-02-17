@@ -27,4 +27,5 @@ webcandy2-*.tar
 # this depending on your deployment strategy.
 /priv/static/
 
+/.vscode/
 /.elixir_ls/
