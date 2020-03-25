@@ -1,4 +1,4 @@
-defmodule Webcandy2Web.AIAuthErrorHandler do
+defmodule Webcandy2Web.APIAuthErrorHandler do
   use Webcandy2Web, :controller
   alias Plug.Conn
 

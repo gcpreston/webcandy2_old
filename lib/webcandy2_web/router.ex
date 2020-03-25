@@ -2,6 +2,8 @@ defmodule Webcandy2Web.Router do
   use Webcandy2Web, :router
   use Pow.Phoenix.Router
 
+  # Set up according to https://hexdocs.pm/pow/api.html
+
   pipeline :api do
     plug :accepts, ["json"]
     plug Webcandy2Web.APIAuthPlug, otp_app: :webcandy2
@@ -23,5 +25,6 @@ defmodule Webcandy2Web.Router do
     pipe_through [:api, :api_protected]
 
     # protected endpoints here
+    get "/protected", ProtectedController, :token_verify
   end
 end
