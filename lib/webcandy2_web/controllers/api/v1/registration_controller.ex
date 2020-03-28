@@ -20,6 +20,6 @@ defmodule Webcandy2Web.API.V1.RegistrationController do
         |> put_status(500)
         |> json(%{error: %{status: 500, message: "Couldn't create user", errors: errors}})
     end
-    |> Conn.halt()
+    |> Conn.halt
   end
 end

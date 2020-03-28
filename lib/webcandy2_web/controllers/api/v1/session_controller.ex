@@ -17,7 +17,7 @@ defmodule Webcandy2Web.API.V1.SessionController do
         |> put_status(401)
         |> json(%{error: %{status: 401, message: "Invalid email or password"}})
     end
-    |> Conn.halt()
+    |> Conn.halt
   end
 
   @spec renew(Conn.t(), map()) :: Conn.t()
@@ -35,7 +35,7 @@ defmodule Webcandy2Web.API.V1.SessionController do
       {conn, _user} ->
         json(conn, %{data: %{token: conn.private[:api_access_token], renewal_token: conn.private[:api_renewal_token]}})
     end
-    |> Conn.halt()
+    |> Conn.halt
   end
 
   @spec delete(Conn.t(), map()) :: Conn.t()
@@ -43,6 +43,6 @@ defmodule Webcandy2Web.API.V1.SessionController do
     conn
     |> Pow.Plug.delete()
     |> json(%{data: %{}})
-    |> Conn.halt()
+    |> Conn.halt
   end
 end

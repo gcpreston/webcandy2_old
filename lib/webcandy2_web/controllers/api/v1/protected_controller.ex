@@ -10,7 +10,7 @@ defmodule Webcandy2Web.API.V1.ProtectedController do
     def no_auth_test(conn, _params) do
         conn
         |> json(%{data: %{message: "Hello, anonymous user!"}})
-        |> Conn.halt()
+        |> Conn.halt
     end
 
     @spec auth_test(Conn.t(), map()) :: Conn.t()
@@ -28,6 +28,6 @@ defmodule Webcandy2Web.API.V1.ProtectedController do
                 conn
                 |> json(%{data: %{message: "A protected hello to you, " <> user.email <> "!"}})
         end
-        |> Conn.halt()
+        |> Conn.halt
     end
 end
