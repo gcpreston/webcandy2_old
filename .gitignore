@@ -28,6 +28,7 @@ webcandy2-*.tar
 /priv/static/
 
 # VSCode stuff
+/.vscode/
 /.elixir_ls/
 
 /assets/node_modules/
