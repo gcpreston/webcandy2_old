@@ -3,12 +3,12 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
 } from "react-router-dom";
 import { Container } from '@material-ui/core'
 
 import Logo from './Logo';
 import LoginForm from './LoginForm';
+import SignupForm from './SignupForm';
 
 export default function App() {
   return (
@@ -22,6 +22,9 @@ export default function App() {
           </Route>
           <Route path="/login">
             <LoginForm />
+          </Route>
+          <Route path="/signup">
+            <SignupForm />
           </Route>
         </Switch>
       </Container>

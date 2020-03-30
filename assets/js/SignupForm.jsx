@@ -14,25 +14,26 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   paper: {
-    color: theme.palette.text.secondary,
     padding: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-    textAlign: 'center'
+    textAlign: 'center',
+    marginBottom: theme.spacing(2)
   },
   subPaper: {
-    padding: theme.spacing(1),
+    padding: theme.spacing(2)
   }
 }));
 
-export default function LoginForm() {
+export default function SignupForm() {
   const classes = useStyles();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   return (
     <React.Fragment>
       <Paper className={classes.paper}>
+        <h2>Create an Account</h2>
         <form className={classes.root}>
           <div>
             <TextField
@@ -48,14 +49,21 @@ export default function LoginForm() {
               value={password}
               onChange={e => setPassword(e.target.value)}
             />
+            <TextField
+              label="Confirm Password"
+              variant="outlined"
+              type="password"
+              value={confirmPassword}
+              onChange={e => setConfirmPassword(e.target.value)}
+            />
             <br />
-            <Button color="primary" variant="contained" type="submit">Sign In</Button>
+            <Button color="primary" variant="contained" type="submit">Sign Up</Button>
           </div>
         </form>
       </Paper>
 
       <Paper className={classes.subPaper}>
-        <p>Need an account? <Link to="/signup">Sign Up</Link></p>
+        <span>Already Registered? <Link to="/login">Login</Link></span>
       </Paper>
     </React.Fragment>
   );
