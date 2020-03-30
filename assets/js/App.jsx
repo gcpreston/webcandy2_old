@@ -1,11 +1,30 @@
 import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+import { Container } from '@material-ui/core'
 
-import logo from "../static/images/webcandy_logo.png";
+import Logo from './Logo';
+import LoginForm from './LoginForm';
 
 export default function App() {
   return (
-    <div className='App'>
-      <img className="title" src={logo} alt="Webcandy logo" />
-    </div>
+    <Router>
+      <Container maxWidth="sm">
+        <Logo />
+
+        <Switch>
+          <Route exact path="/">
+            <p>Hello there</p>
+          </Route>
+          <Route path="/login">
+            <LoginForm />
+          </Route>
+        </Switch>
+      </Container>
+    </Router>
   );
 }

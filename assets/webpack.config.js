@@ -2,9 +2,11 @@ const HtmlWebPackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   entry: './js/index.jsx',
+  output: {
+    publicPath: '/'
+  },
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
@@ -16,11 +18,7 @@ module.exports = {
       },
       {
         test: /\.html$/,
-        use: [
-          {
-            loader: "html-loader"
-          }
-        ]
+        use: "html-loader"
       },
       {
         test: /\.css$/,
@@ -29,18 +27,20 @@ module.exports = {
       {
         test: /\.(jpg|png)$/,
         use: {
-            loader: "url-loader",
-            options: {
-                limit: 25000,
-            },
+          loader: "url-loader",
+          options: {
+            limit: 25000,
+          },
         },
       },
     ]
   },
+  devServer: {
+    historyApiFallback: true,
+  },
   plugins: [
     new HtmlWebPackPlugin({
       template: "./index.html",
-      filename: "./index.html"
     })
   ]
 };
