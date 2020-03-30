@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Paper, TextField } from '@material-ui/core';
+import { Button, Paper, TextField, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     '& .MuiTextField-root': {
       margin: theme.spacing(1),
-      width: '90%'
+      fullWidth: true
     },
     '& .MuiButton-root': {
       margin: theme.spacing(1)
@@ -34,14 +34,16 @@ export default function LoginForm() {
     <React.Fragment>
       <Paper className={classes.paper}>
         <form className={classes.root}>
-          <div>
+          <Box display="flex" flexDirection="column">
             <TextField
+              required
               label="Email"
               variant="outlined"
               value={email}
               onChange={e => setEmail(e.target.value)}
             />
             <TextField
+              required
               label="Password"
               variant="outlined"
               type="password"
@@ -50,7 +52,7 @@ export default function LoginForm() {
             />
             <br />
             <Button color="primary" variant="contained" type="submit">Sign In</Button>
-          </div>
+          </Box>
         </form>
       </Paper>
 

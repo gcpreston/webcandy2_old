@@ -13,7 +13,7 @@ import SignupForm from './SignupForm';
 export default function App() {
   return (
     <Router>
-      <Container maxWidth="sm">
+      <Container maxWidth="xs">
         <Logo />
 
         <Switch>

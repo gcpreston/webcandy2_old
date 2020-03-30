@@ -6,8 +6,8 @@ import logo from '../static/images/webcandy_logo.png';
 const useStyles = makeStyles((theme) => ({
   logo: {
     maxWidth: '100%',
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2)
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3)
   }
 }));
 
