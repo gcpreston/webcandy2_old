@@ -3,12 +3,14 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Redirect
 } from "react-router-dom";
 import { Container } from '@material-ui/core'
 
 import Logo from './Logo';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
+import NoMatch from './NoMatch';
 
 export default function App() {
   return (
@@ -25,6 +27,9 @@ export default function App() {
           </Route>
           <Route path="/signup">
             <SignupForm />
+          </Route>
+          <Route path="*">
+            <NoMatch />
           </Route>
         </Switch>
       </Container>
