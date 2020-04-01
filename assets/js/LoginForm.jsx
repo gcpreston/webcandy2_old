@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Paper, TextField, Box } from '@material-ui/core';
+import { Button, Paper, TextField, Box, Card } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -13,14 +13,12 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1)
     }
   },
-  paper: {
-    color: theme.palette.text.secondary,
+  mainCard: {
     padding: theme.spacing(2),
     marginBottom: theme.spacing(2),
-    textAlign: 'center'
   },
-  subPaper: {
-    padding: theme.spacing(1),
+  subCard: {
+    padding: theme.spacing(2),
   }
 }));
 
@@ -32,7 +30,7 @@ export default function LoginForm() {
 
   return (
     <React.Fragment>
-      <Paper className={classes.paper}>
+      <Card className={classes.mainCard}>
         <form className={classes.root}>
           <Box display="flex" flexDirection="column">
             <TextField
@@ -54,11 +52,11 @@ export default function LoginForm() {
             <Button color="primary" variant="contained" type="submit">Sign In</Button>
           </Box>
         </form>
-      </Paper>
+      </Card>
 
-      <Paper className={classes.subPaper}>
-        <p>Need an account? <Link to="/signup">Sign Up</Link></p>
-      </Paper>
+      <Card className={classes.subCard}>
+        <span>Need an account? <Link to="/signup">Sign Up</Link></span>
+      </Card>
     </React.Fragment>
   );
 }
