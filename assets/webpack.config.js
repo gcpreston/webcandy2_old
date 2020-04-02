@@ -1,4 +1,4 @@
-const HtmlWebPackPlugin = require("html-webpack-plugin");
+const HtmlWebPackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './js/index.jsx',
@@ -10,7 +10,7 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader"
+          loader: 'babel-loader'
         },
         resolve: {
           extensions: ['.js', '.jsx']
@@ -18,7 +18,7 @@ module.exports = {
       },
       {
         test: /\.html$/,
-        use: "html-loader"
+        use: 'html-loader'
       },
       {
         test: /\.css$/,
@@ -27,7 +27,7 @@ module.exports = {
       {
         test: /\.(jpg|png)$/,
         use: {
-          loader: "url-loader",
+          loader: 'url-loader',
           options: {
             limit: 25000,
           },
@@ -40,7 +40,12 @@ module.exports = {
   },
   plugins: [
     new HtmlWebPackPlugin({
-      template: "./index.html",
+      template: './index.html',
     })
-  ]
+  ],
+  devServer: {
+    proxy: {
+      '/api': 'http://localhost:4000'
+    }
+  }
 };

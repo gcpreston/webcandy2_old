@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Paper, TextField, Box, Card } from '@material-ui/core';
+import { Button, TextField, Box, Card } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
   },
   subCard: {
     padding: theme.spacing(2),
+  },
+  signUp: {
+    float: 'right'
   }
 }));
 
@@ -28,10 +32,31 @@ export default function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    // TODO: Figure out how to talk to localhost?
+    axios.post('/api/v1/session', {
+      'user': {
+        'email': email,
+        'password': password
+      }
+    }).then((response) => {
+      // for (const key in response) {
+      //   setCookie(key, response.data['key'])
+      // }
+      localStorage.setItem('token', response.data['token']);
+      localStorage.setItem('renewal_token', response.data['renewal_token']);
+      window.location = '/';
+    }).catch((error) => {
+      console.log(error.response);
+    });
+  }
+
   return (
     <React.Fragment>
       <Card className={classes.mainCard}>
-        <form className={classes.root}>
+        <form className={classes.root} onSubmit={handleSubmit}>
           <Box display="flex" flexDirection="column">
             <TextField
               required
