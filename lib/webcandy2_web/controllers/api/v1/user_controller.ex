@@ -1,9 +1,30 @@
-defmodule Webcandy2Web.API.V1.RegistrationController do
+defmodule Webcandy2Web.API.V1.UserController do
   use Webcandy2Web, :controller
+
+  @pow_config [otp_app: :webcandy2]
 
   alias Ecto.Changeset
   alias Plug.Conn
+  alias Webcandy2Web.APIAuthPlug
   alias Webcandy2Web.ErrorHelpers
+
+  @spec show(Conn.t(), map()) :: Conn.t()
+  def show(conn, _params) do
+    conn
+    |> APIAuthPlug.fetch(@pow_config)
+    |> case do
+      {conn, nil} ->
+          # This case should not occur due to this being a protected route
+          conn
+          |> put_status(401)
+          |> json(%{error: %{status: 401, message: "Invalid token"}})
+      
+      {conn, user} ->
+          conn
+          |> json(%{data: %{user: user}})
+    end
+    |> Conn.halt
+  end
 
   @spec create(Conn.t(), map()) :: Conn.t()
   def create(conn, %{"user" => user_params}) do
