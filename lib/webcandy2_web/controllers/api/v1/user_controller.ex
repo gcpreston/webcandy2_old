@@ -14,14 +14,14 @@ defmodule Webcandy2Web.API.V1.UserController do
     |> APIAuthPlug.fetch(@pow_config)
     |> case do
       {conn, nil} ->
-          # This case should not occur due to this being a protected route
+          # This case should only occur in a web request if the route is unprotected
           conn
           |> put_status(401)
-          |> json(%{error: %{status: 401, message: "Invalid token"}})
+          |> json(%{status: 401, message: "Invalid token"})
       
       {conn, user} ->
           conn
-          |> json(%{data: %{user: user}})
+          |> json(%{user: user})
     end
     |> Conn.halt
   end
@@ -32,14 +32,14 @@ defmodule Webcandy2Web.API.V1.UserController do
     |> Pow.Plug.create_user(user_params)
     |> case do
       {:ok, _user, conn} ->
-        json(conn, %{data: %{token: conn.private[:api_access_token], renewal_token: conn.private[:api_renewal_token]}})
+        json(conn, %{token: conn.private[:api_access_token], renewal_token: conn.private[:api_renewal_token]})
 
       {:error, changeset, conn} ->
         errors = Changeset.traverse_errors(changeset, &ErrorHelpers.translate_error/1)
 
         conn
         |> put_status(500)
-        |> json(%{error: %{status: 500, message: "Couldn't create user", errors: errors}})
+        |> json(%{status: 500, message: "Couldn't create user", errors: errors})
     end
     |> Conn.halt
   end
