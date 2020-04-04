@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Button, TextField, Box, Card } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
@@ -31,30 +31,30 @@ export default function LoginForm() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [toHome, setToHome] = useState(false);
 
   function handleSubmit(event) {
     event.preventDefault();
 
-    // TODO: Figure out how to talk to localhost?
     axios.post('/api/v1/session', {
       'user': {
         'email': email,
         'password': password
       }
     }).then((response) => {
-      // for (const key in response) {
-      //   setCookie(key, response.data['key'])
-      // }
       localStorage.setItem('token', response.data['token']);
       localStorage.setItem('renewal_token', response.data['renewal_token']);
-      window.location = '/';
+      setToHome(true);
     }).catch((error) => {
       console.log(error.response);
+      alert(error.response.data.message);
     });
   }
 
   return (
-    <React.Fragment>
+    <>
+      {toHome ? <Redirect to="/" /> : null}
+
       <Card className={classes.mainCard}>
         <form className={classes.root} onSubmit={handleSubmit}>
           <Box display="flex" flexDirection="column">
@@ -82,6 +82,6 @@ export default function LoginForm() {
       <Card className={classes.subCard}>
         <span>Need an account? <Link to="/signup">Sign Up</Link></span>
       </Card>
-    </React.Fragment>
+    </>
   );
 }

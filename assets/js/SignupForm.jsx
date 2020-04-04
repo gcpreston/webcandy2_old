@@ -41,7 +41,7 @@ export default function SignupForm(props) {
         'password': password,
         'confirm_password': confirmPassword
       }
-     }).then((response) => {
+    }).then((response) => {
       alert('User created successfully!');
       localStorage.setItem('token', response.data['token']);
       localStorage.setItem('renewal_token', response.data['renewal_token']);
@@ -53,7 +53,7 @@ export default function SignupForm(props) {
   }
 
   return (
-    <React.Fragment>
+    <>
       {toHome ? <Redirect to="/" /> : null}
 
       <Card className={classes.mainCard}>
@@ -92,6 +92,6 @@ export default function SignupForm(props) {
       <Card className={classes.subCard}>
         <span>Already Registered? <Link to="/login">Login</Link></span>
       </Card>
-    </React.Fragment>
+    </>
   );
 }
