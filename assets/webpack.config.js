@@ -35,9 +35,6 @@ module.exports = {
       },
     ]
   },
-  devServer: {
-    historyApiFallback: true,
-  },
   plugins: [
     new HtmlWebPackPlugin({
       template: './index.html',
@@ -46,7 +43,11 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     proxy: {
-      '/api': 'http://localhost:4000'
+      '/api': 'http://localhost:4000',
+      '/socket': {
+        target: 'ws://localhost:4000',
+        ws: true
+      }
     }
   }
 };
