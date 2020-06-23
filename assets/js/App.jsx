@@ -22,7 +22,8 @@ export default function App() {
         <Switch>
           <Route exact path="/">
             {/* LightForm will redirect back if token has expired and cannot be renewed */}
-            {localStorage.getItem('token') ? <LightForm /> : <Redirect to="/login" />}
+            {/* localStorage.getItem('token') ? <LightForm /> : <Redirect to="/login" /> */}
+            <LightForm />
           </Route>
           <Route path="/login">
             <LoginForm />
