@@ -53,3 +53,6 @@ config :logger, level: :info
 # Finally import the config/prod.secret.exs which loads secrets
 # and configuration from environment variables.
 import_config "prod.secret.exs"
+
+config :guardian, Guardian,
+  secret_key: System.get_env("GUARDIAN_SECRET_KEY")

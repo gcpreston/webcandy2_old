@@ -4,9 +4,27 @@ defmodule Webcandy2.Accounts do
   """
 
   import Ecto.Query, warn: false
-  alias Webcandy2.Repo
 
+  alias Argon2
+  alias Webcandy2.Repo
   alias Webcandy2.Accounts.User
+
+  def authenticate_user(username, password) do
+    query = from u in User, where: u.username == ^username
+    case Repo.one(query) do
+      nil ->
+        Argon2.no_user_verify()
+        {:error, :invalid_credentials}
+      user ->
+        IO.inspect password
+        IO.inspect user.password_hash
+        if Argon2.verify_pass(password, user.password_hash) do
+          {:ok, user}
+        else
+          {:error, :invalid_credentials}
+        end
+    end
+  end
 
   @doc """
   Returns the list of users.
@@ -20,6 +38,22 @@ defmodule Webcandy2.Accounts do
   def list_users do
     Repo.all(User)
   end
+
+  @doc """
+  Gets a single user.
+
+  Returns `nil` if the User does not exist.
+
+  ## Examples
+
+      iex> get_user(123)
+      %User{}
+
+      iex> get_user(456)
+      nil
+
+  """
+  def get_user(id), do: Repo.get(User, id)
 
   @doc """
   Gets a single user.
@@ -51,7 +85,7 @@ defmodule Webcandy2.Accounts do
   """
   def create_user(attrs \\ %{}) do
     %User{}
-    |> User.changeset(attrs)
+    |> User.registration_changeset(attrs)
     |> Repo.insert()
   end
 

@@ -13,7 +13,6 @@ defmodule Webcandy2Web.UserView do
   def render("user.json", %{user: user}) do
     %{id: user.id,
       username: user.username,
-      email: user.email,
-      password_hash: user.password_hash}
+      email: user.email}
   end
 end

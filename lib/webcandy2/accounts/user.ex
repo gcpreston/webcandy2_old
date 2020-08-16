@@ -2,6 +2,8 @@ defmodule Webcandy2.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Argon2
+
   schema "users" do
     field :username, :string
     field :email, :string
@@ -32,7 +34,8 @@ defmodule Webcandy2.Accounts.User do
   defp put_password_hash(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{password: password}} ->
-        put_change(changeset, :password_hash, Pbkdf2.add_hash(password))
+        IO.puts("password: #{password}")
+        change(changeset, password_hash: Argon2.hash_pwd_salt(password))
       _ ->
         changeset
     end
