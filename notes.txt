@@ -1,0 +1,4 @@
+It appears that this version was an attempt to implement authentication using Guardian.
+This version also has a separate frontend for an API-only backend. It doesn't look like
+the frontend is built at all though, so while I have still yet to actually look at the
+diffs, I'm pretty confident that there is nothing here of value as opposed to master.
