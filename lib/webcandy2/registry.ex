@@ -1,8 +1,9 @@
 defmodule Webcandy2.Registry do
   @moduledoc """
-  A GenServer to keep track of Webcandy LED clients and their states.
+  A GenServer to keep track of the state of each active Webcandy client.
 
   https://elixir-lang.org/getting-started/mix-otp/genserver.html
+  https://elixir-lang.org/getting-started/mix-otp/dynamic-supervisor.html
   """
   use GenServer
 
@@ -51,10 +52,10 @@ defmodule Webcandy2.Registry do
     if Map.has_key?(names, name) do
       {:noreply, {names, refs}}
     else
-      {:ok, bucket} = Webcandy2.Bucket.start_link([])
-      ref = Process.monitor(bucket)
+      {:ok, pid} = DynamicSupervisor.start_child(Webcandy2.BucketSupervisor, Webcandy2.Bucket)
+      ref = Process.monitor(pid)
       refs = Map.put(refs, ref, name)
-      names = Map.put(names, name, bucket)
+      names = Map.put(names, name, pid)
       {:noreply, {names, refs}}
     end
   end

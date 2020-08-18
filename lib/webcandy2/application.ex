@@ -17,7 +17,7 @@ defmodule Webcandy2.Application do
       Webcandy2Web.Endpoint,
       # Start a worker by calling: Webcandy2.Worker.start_link(arg)
       # {Webcandy2.Worker, arg}
-      {Webcandy2.Registry, name: Webcandy2.RegistryServer}  # TODO: Figure out better name(s)?
+      {Webcandy2.RegistrySupervisor, name: Webcandy2.RegistrySupervisor}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
