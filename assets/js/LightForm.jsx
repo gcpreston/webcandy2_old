@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ChromePicker } from 'react-color';
 import { makeStyles } from '@material-ui/core';
 
-import { socket, channel } from './socket';
+import { _socket, channel} from './socket';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,14 +14,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function LightForm() {
-  const classes  = useStyles();
+  const classes = useStyles();
 
   const [color, setColor] = useState({});
 
   useEffect(() => {
-   channel.on('shout', payload => {
-     setColor(payload);
-   })
+    // Connect to the channel
+    channel.join()
+      .receive("ok", resp => { 
+        console.log("Joined successfully", resp);
+        setColor(resp.hsv);
+      })
+      .receive("error", resp => { console.log("Unable to join", resp) });
+    
+    channel.on('shout', payload => {
+      setColor(payload);
+    });
   }, []);
 
   function handleChange(color, _event) {

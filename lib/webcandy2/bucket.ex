@@ -2,7 +2,7 @@ defmodule Webcandy2.Bucket do
   @moduledoc """
   https://elixir-lang.org/getting-started/mix-otp/agent.html
   """
-  use Agent, restart: :temporary
+  use Agent, restart: :temporary  # TODO: Wondering how the future logic to reconnect dropped clients will mingle with this
 
   @doc """
   Starts a new bucket.

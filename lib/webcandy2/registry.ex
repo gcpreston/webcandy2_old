@@ -33,6 +33,7 @@ defmodule Webcandy2.Registry do
   end
 
   ## GenServer callbacks
+  # TODO: Add debug logging
 
   @impl true
   def init(:ok) do

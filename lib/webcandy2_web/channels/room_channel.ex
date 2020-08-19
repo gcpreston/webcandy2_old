@@ -1,12 +1,19 @@
 defmodule Webcandy2Web.RoomChannel do
   use Phoenix.Channel
 
-  def join("room:lobby", _message, socket) do
-    {:ok, socket}
-  end
+  alias Webcandy2.Registry
+  alias Webcandy2.Bucket
 
-  def join("room:" <> _private_room_id, _params, _socket) do
-    {:error, %{reason: "unauthorized"}}
+  def join("room:" <> room_id, _params, socket) do
+    # For now, simply create a bucket for the room if one doesn't already exist
+    resp = Registry.lookup(Registry, room_id)
+    if resp == :error do
+      Registry.create(Registry, room_id)
+      {:ok, socket}
+    else
+      {:ok, bucket} = resp
+      {:ok, %{hsv: Bucket.get(bucket, :hsv)}, socket}
+    end
   end
 
   # Channels can be used in a request/response fashion
@@ -16,9 +23,12 @@ defmodule Webcandy2Web.RoomChannel do
   end
 
   # It is also common to receive messages from the client and
-  # broadcast to everyone in the current topic (group:lobby).
+  # broadcast to everyone in the current topic (room:lobby).
   def handle_in("shout", payload, socket) do
-    IO.inspect payload
+    "room:" <> room_id = socket.topic
+    {:ok, bucket} = Registry.lookup(Registry, room_id)
+    Bucket.put(bucket, :hsv, payload)
+
     broadcast socket, "shout", payload
     {:noreply, socket}
   end
