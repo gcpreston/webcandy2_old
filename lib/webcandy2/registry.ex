@@ -7,6 +7,8 @@ defmodule Webcandy2.Registry do
   """
   use GenServer
 
+  require Logger
+
   ## Client API
 
   @doc """
@@ -57,6 +59,7 @@ defmodule Webcandy2.Registry do
       ref = Process.monitor(pid)
       refs = Map.put(refs, ref, name)
       names = Map.put(names, name, pid)
+      Logger.debug "Created bucket \"" <> name <> "\""
       {:noreply, {names, refs}}
     end
   end

@@ -24,7 +24,9 @@ export default function LightForm() {
     channel.join()
       .receive("ok", resp => {
         console.log("Joined successfully", resp);
-        setColor(resp.hsv);
+        if (resp && resp.hsv) {
+          setColor(resp.hsv);
+        }
         setJoining(false);
       })
       .receive("error", resp => {
@@ -44,11 +46,14 @@ export default function LightForm() {
   return (
     <div className={classes.root}>
       {joining ? <p>Joining channel...</p> :
-        <ChromePicker
-          className={classes.picker}
-          color={color}
-          onChange={handleChange}
-        />
+        <>
+          <p>Connected to channel room:lobby</p>
+          <ChromePicker
+            className={classes.picker}
+            color={color}
+            onChange={handleChange}
+          />
+        </>
       }
     </div>
   );
