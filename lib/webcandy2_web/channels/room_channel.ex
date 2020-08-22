@@ -12,7 +12,7 @@ defmodule Webcandy2Web.RoomChannel do
       {:ok, socket}
     else
       {:ok, bucket} = resp
-      {:ok, %{hsv: Bucket.get(bucket, :hsv)}, socket}
+      {:ok, %{color: Bucket.get(bucket, :color)}, socket}
     end
   end
 
@@ -27,7 +27,7 @@ defmodule Webcandy2Web.RoomChannel do
   def handle_in("shout", payload, socket) do
     "room:" <> room_id = socket.topic
     {:ok, bucket} = Registry.lookup(Registry, room_id)
-    Bucket.put(bucket, :hsv, payload)
+    Bucket.put(bucket, :color, payload)
 
     broadcast socket, "shout", payload
     {:noreply, socket}

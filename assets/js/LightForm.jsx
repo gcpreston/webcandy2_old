@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ChromePicker } from 'react-color';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Button, Grid } from '@material-ui/core';
 
 import { _socket, channel } from './socket';
 
@@ -24,8 +24,8 @@ export default function LightForm() {
     channel.join()
       .receive("ok", resp => {
         console.log("Joined successfully", resp);
-        if (resp && resp.hsv) {
-          setColor(resp.hsv);
+        if (resp && resp.color) {
+          setColor(resp.color);
         }
         setJoining(false);
       })
@@ -40,20 +40,31 @@ export default function LightForm() {
   }, []);
 
   function handleChange(color, _event) {
-    channel.push('shout', color.hsv);  // TODO: Probably change this when client is implemented
+    channel.push('shout', color.rgb);  // TODO: Probably change this when client is implemented
+  }
+
+  function handleOff(_event) {
+    channel.push('shout', { r: 0, g: 0, b: 0, a: 0 })
   }
 
   return (
     <div className={classes.root}>
       {joining ? <p>Joining channel...</p> :
-        <>
-          <p>Connected to channel room:lobby</p>
-          <ChromePicker
-            className={classes.picker}
-            color={color}
-            onChange={handleChange}
-          />
-        </>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <p>Connected to channel <b>room:lobby</b></p>
+            </Grid>
+            <Grid item xs={12}>
+              <ChromePicker
+                className={classes.picker}
+                color={color}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Button variant='outlined' onClick={handleOff}>Turn off</Button>
+            </Grid>
+        </Grid>
       }
     </div>
   );
