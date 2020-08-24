@@ -55,7 +55,7 @@ let socket = new Socket("/socket", {params: null});
 socket.connect();
 
 // Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("room:lobby", {});
+let channel = socket.channel("room:bedroom");
 
 export {
   socket,

@@ -4,38 +4,47 @@ defmodule Webcandy2.RegistryTest do
   """
   use ExUnit.Case, async: true
 
+  alias Webcandy2.Bucket
+  alias Webcandy2.Registry
+
   setup do
-    registry = start_supervised!(Webcandy2.Registry)
+    registry = start_supervised!(Registry)
     %{registry: registry}
   end
 
   test "spawns buckets", %{registry: registry} do
-    assert Webcandy2.Registry.lookup(registry, "shopping") == :error
+    assert Registry.lookup(registry, "shopping") == :error
 
-    Webcandy2.Registry.create(registry, "shopping")
-    assert {:ok, bucket} = Webcandy2.Registry.lookup(registry, "shopping")
+    Registry.create(registry, "shopping")
+    assert {:ok, bucket} = Registry.lookup(registry, "shopping")
 
-    Webcandy2.Bucket.put(bucket, "milk", 1)
-    assert Webcandy2.Bucket.get(bucket, "milk") == 1
+    Bucket.put(bucket, "milk", 1)
+    assert Bucket.get(bucket, "milk") == 1
+  end
+
+  test "deletes buckets", %{registry: registry} do
+    Registry.create(registry, "shopping")
+    Registry.delete(registry, "shopping")
+    assert Registry.lookup(registry, "shopping") == :error
   end
 
   test "removes buckets on exit", %{registry: registry} do
-    Webcandy2.Registry.create(registry, "shopping")
-    {:ok, bucket} = Webcandy2.Registry.lookup(registry, "shopping")
+    Registry.create(registry, "shopping")
+    {:ok, bucket} = Registry.lookup(registry, "shopping")
     Agent.stop(bucket)
-    assert Webcandy2.Registry.lookup(registry, "shopping") == :error
+    assert Registry.lookup(registry, "shopping") == :error
   end
 
   test "removes buckets on crash", %{registry: registry} do
-    Webcandy2.Registry.create(registry, "shopping")
-    {:ok, bucket} = Webcandy2.Registry.lookup(registry, "shopping")
+    Registry.create(registry, "shopping")
+    {:ok, bucket} = Registry.lookup(registry, "shopping")
 
     # Stop the bucket with non-normal reason
     Agent.stop(bucket, :shutdown)
-    assert Webcandy2.Registry.lookup(registry, "shopping") == :error
+    assert Registry.lookup(registry, "shopping") == :error
   end
 
   test "are temporary workers" do
-    assert Supervisor.child_spec(Webcandy2.Bucket, []).restart == :temporary
+    assert Supervisor.child_spec(Bucket, []).restart == :temporary
   end
 end
