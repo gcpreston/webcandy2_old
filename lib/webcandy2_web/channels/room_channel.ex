@@ -39,14 +39,11 @@ defmodule Webcandy2Web.RoomChannel do
     end
   end
 
-  # Channels can be used in a request/response fashion
-  # by sending replies to requests from the client
   def handle_in("ping", payload, socket) do
     {:reply, {:ok, payload}, socket}
   end
 
-  # It is also common to receive messages from the client and
-  # broadcast to everyone in the current topic
+  # Handle color changes
   def handle_in("shout", payload, socket) do
     "room:" <> room_id = socket.topic
     {:ok, bucket} = Registry.lookup(Registry, room_id)
@@ -56,6 +53,7 @@ defmodule Webcandy2Web.RoomChannel do
     {:noreply, socket}
   end
 
+  # Get around not being able to broadcast from join/3
   def handle_info("client_connect", socket) do
     broadcast(socket, "client_connect", %{})
     {:noreply, socket}
